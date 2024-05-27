@@ -38,6 +38,9 @@ Basket.belongsTo(User)
 Basket.hasMany(BasketProduct)
 BasketProduct.belongsTo(Basket)
 
+User.hasMany(Product)
+Product.belongsTo(User) //
+
 Type.hasMany(Product)
 Product.belongsTo(Type)
 

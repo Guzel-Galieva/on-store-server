@@ -7,21 +7,11 @@ class ProductController {
     async create(req, res, next) {
         try {
             let {name, price, typeId, description, phone} = req.body
+            console.log(name)
             const {img} = req.files
             let fileName = uuid.v4() + ".jpg"
             img.mv(path.resolve(__dirname, '..', 'static', fileName))
-            const product = await Product.create({name, price, typeId, description, img: fileName, phone})
-
-            // if (info) {
-            //     info = JSON.parse(info)
-            //     info.forEach(i =>
-            //         DeviceInfo.create({
-            //             title: i.title,
-            //             description: i.description,
-            //             deviceId: device.id
-            //         })
-            //     )
-            // }
+            const product = await Product.create({name, price, typeId, userId : req.user.id, description, img: fileName, phone})
 
             return res.json(product)
         } catch (e) {
@@ -42,6 +32,11 @@ class ProductController {
         else {
             products = await Product.findAndCountAll({limit, offset}) 
         }
+        return res.json(products)
+    }
+
+    async getUsers(req, res) {
+        const products = await Product.findAll({where:{userId : req.user.id}})
         return res.json(products)
     }
 
